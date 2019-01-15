@@ -1,0 +1,27 @@
+{
+  "name": "reaktor-package-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:server": "nodemon src/api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugo-cardenas/reaktor-package-info.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hugo-cardenas/reaktor-package-info/issues"
+  },
+  "homepage": "https://github.com/hugo-cardenas/reaktor-package-info#readme",
+  "dependencies": {
+    "eslint": "^5.12.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
