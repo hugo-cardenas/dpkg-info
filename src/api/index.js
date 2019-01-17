@@ -7,7 +7,7 @@ const { getPackages } = require('./parser');
 getPackages('./status.real.txt')
   .then(packages => {
     console.log('TOTAL LENGTH', packages.length);
-    // packages.forEach(package => console.log(`${JSON.stringify(package, null, 2)}\n\n`))
+    packages.forEach(package => console.log(`${JSON.stringify(package, null, 2)}\n\n`))
   });
 
 

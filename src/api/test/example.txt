@@ -1,0 +1,88 @@
+Package: python-pkg-resources
+Status: install ok installed
+Priority: optional
+Section: python
+Installed-Size: 175
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Source: distribute
+Version: 0.6.24-1ubuntu1
+Replaces: python2.3-setuptools, python2.4-setuptools
+Provides: python2.6-setuptools, python2.7-setuptools
+Depends: python (>= 2.6), python (<< 2.8), libslf4j-java, libplexus-sec-dispatcher-java
+Suggests: python-distribute, python-distribute-doc
+Conflicts: python-setuptools (<< 0.6c8-3), python2.3-setuptools (<< 0.6b2), python2.4-setuptools (<< 0.6b2)
+Description: Package Discovery and Resource Access using pkg_resources
+ The pkg_resources module provides an API for Python libraries to
+ access their resource files, and for extensible applications and
+ frameworks to automatically discover plugins.  It also provides
+ runtime support for using C extensions that are inside zipfile-format
+ eggs, support for merging packages that have separately-distributed
+ modules or subpackages, and APIs for managing Python's current
+ "working set" of active packages.
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Homepage: http://packages.python.org/distribute
+Python-Version: 2.6, 2.7
+
+Package: libslf4j-java
+Status: install ok installed
+Priority: optional
+Section: java
+Installed-Size: 315
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Version: 1.6.4-1
+Depends: libplexus-sec-dispatcher-java
+Suggests: libcommons-logging-java, liblog4j1.2-java
+Description: Simple Logging Facade for Java
+ The Simple Logging Facade for Java (or SLF4J) is intended to serve as
+ a simple facade for various logging APIs allowing to the end-user to
+ plug in the desired implementation at deployment time. SLF4J also
+ allows for a gradual migration path away from Apache Commons
+ Logging (CL)
+ .
+ Logging API implementations can either choose to implement the SLF4J
+ interfaces directly, e.g. logback or SimpleLogger. Alternatively, it
+ is possible (and rather easy) to write SLF4J adapters for the given
+ API implementation, e.g. Log4jLoggerAdapter or JDK14LoggerAdapter.
+Original-Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Homepage: http://www.slf4j.org/
+
+Package: libplexus-sec-dispatcher-java
+Status: install ok installed
+Priority: optional
+Section: java
+Installed-Size: 89
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Source: plexus-sec-dispatcher
+Version: 1.3.1-5
+Depends: junit (>= 3.8.2) | coreutils | cloudstack-common, libplexus-cipher-java, libplexus-container-default-java, libplexus-utils-java | sudo
+Suggests: libplexus-sec-dispatcher-java-doc
+Description: Plexus Security Dispatcher Component used by Maven
+ The Plexus project provides a full software stack for creating and
+ executing software projects. Based on the Plexus container, the applications
+ can utilise component-oriented programming to build modular, reusable
+ components that can easily be assembled and reused.
+Original-Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Homepage: https://github.com/sonatype/plexus-sec-dispatcher
+
+Package: libtext-wrapi18n-perl
+Status: install ok installed
+Priority: required
+Section: perl
+Installed-Size: 68
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Architecture: all
+Version: 0.06-7
+Depends: libtext-charwidth-perl, python-pkg-resources
+Description: internationalized substitute of Text::Wrap
+ This module is a substitution for Text::Wrap, supporting
+ multibyte characters such as UTF-8, EUC-JP, and GB2312, fullwidth
+ characters such as east Asian characters, combining characters
+ such as diacritical marks and Thai, and languages which don't
+ use whitespaces between words such as Chinese and Japanese.
+ .
+ It provides wrap().
+Original-Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Homepage: http://search.cpan.org/search?module=Text::WrapI18N

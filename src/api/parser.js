@@ -5,11 +5,38 @@ const readFile = promisify(fs.readFile);
 
 const getPackages = async filePath => {
   const content = await readFile(filePath, 'utf8');
-  console.log(content.split('\n\n').length);
-  return content
+  const packages = content
     .split('\n\n')
-    // .slice(0, 5)
+    .filter(block => block.trim() !== '')
+    // .filter(block => block.indexOf('Package: linux-image-3.2.0-35-generic') >= 0)
     .map(parsePackage);
+
+  const packagesByName = packages.reduce((packagesByName, pkg) => {
+    return {
+      ...packagesByName,
+      [pkg.name]: pkg
+    };
+  }, {});
+
+  // Calculate dependentPackages property
+  Object.keys(packagesByName)
+    .forEach(name => {
+      const pkg = packagesByName[name];
+      const flatDependencies = [].concat(
+        ...pkg.dependencies.map(dependency => [
+          dependency.main,
+          ...dependency.alternatives
+        ])
+      );
+      flatDependencies.forEach(dependencyName => {
+        if (packagesByName[dependencyName] &&
+          !packagesByName[dependencyName].dependentPackages.includes(name)) {
+          packagesByName[dependencyName].dependentPackages.push(name);
+        }
+      });
+    });
+
+  return packagesByName;
 };
 
 const parsePackage = (string, index) => {
@@ -17,10 +44,10 @@ const parsePackage = (string, index) => {
     return {
       name: parseName(string),
       description: parseDescription(string),
-      dependencies: parseDependencies(string)
+      dependencies: parseDependencies(string),
+      dependentPackages: []
     }
   } catch (error) {
-    console.log(string);
     throw new Error(`Failed to parse entry ${index}: ${error.message}`);
   }
 };
@@ -48,17 +75,31 @@ const parseDependencies = string => {
     return [];
   }
   const dependenciesLine = matches[1];
+
+  // 'libc6 (>= 2.2.5)' -> 'libc6'
+  const parsePackageName = packageString => packageString.split(' ').shift();
+
   /*
    * E.g.  
-   * 'libc6 (>= 2.2.5), dpkg (>= 1.15.4) | install-info' -> ['libc6', 'dpkg', TODO ]
+   * 'libc6 (>= 2.2.5), dpkg (>= 1.15.4) | install-info' -> 
+   * [{ main: 'libc6', alternatives: [] }, { main: 'dpkg', alternatives: ['install-info'] }]
    */
-  // TODO Handle if invalid format
   const dependencies = dependenciesLine
     .split(', ')
-    .map(string => string.split(' ').shift());    
+    .map(string => {
+      const packages = string.split(' | ');
+      const dependency = {
+        main: parsePackageName(packages.shift()),
+        alternatives: packages.map(parsePackageName)
+      };
+      return dependency;
+    });
 
+  // Filter out duplicates comparing by dependency.main 
   return dependencies
-    .filter((element, index) => dependencies.indexOf(element) === index);
+    .filter((dependency, index) =>
+      dependencies.findIndex(otherDependency => otherDependency.main === dependency.main) === index
+    );
 };
 
 module.exports = {
