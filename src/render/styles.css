@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#root {
+  /* height: 1024px; */
+  width: 100%;
+}
+
+.root-container {
+  margin: 25px auto;
+  background-color: rgb(236, 236, 236);
+  height: 100%;
+  /* width: 100%; */
+  padding: 20px;
+}
+
+ul {
+  padding: 0;
+}
+
+.package-list {}
+
+.package-list li {
+  list-style-type: none;
+  padding: 10px 15px;
+  background-color: rgb(247, 247, 247);
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.package-list li:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+.package-list a {
+  text-decoration: none;
+}

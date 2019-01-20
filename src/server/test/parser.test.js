@@ -1,10 +1,10 @@
 const path = require('path');
-const { getPackages } = require('../parser');
+const { getPackageDictionary } = require('../parser');
 
 test('parse example file', async () => {
   const file = path.join(__dirname, 'example.txt');
 
-  const packagesByName = await getPackages(file);
+  const packagesByName = await getPackageDictionary(file);
 
   const packages = Object.keys(packagesByName).map(name => packagesByName[name]);
   expect(packages).toHaveLength(4);

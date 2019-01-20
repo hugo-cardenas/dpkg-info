@@ -3,48 +3,63 @@ const { promisify } = require('util');
 
 const readFile = promisify(fs.readFile);
 
-const getPackages = async filePath => {
+interface Dependency {
+  main: string;
+  alternatives: Array<string>;
+};
+
+interface Package {
+  name: string;
+  description: string;
+  dependencies: Array<Dependency>;
+  dependentPackages: Array<string>;
+};
+
+interface PackageDictionary {
+  [name: string]: Package
+}
+
+const getPackageDictionary = async (filePath: string): Promise<PackageDictionary> => {
   const content = await readFile(filePath, 'utf8');
   const packages = content
     .split('\n\n')
-    .filter(block => block.trim() !== '')
-    // .filter(block => block.indexOf('Package: linux-image-3.2.0-35-generic') >= 0)
+    .filter((block: string) => block.trim() !== '')
     .map(parsePackage);
 
-  const packagesByName = packages.reduce((packagesByName, pkg) => {
+  const packageDictionary = packages.reduce((dictionary: PackageDictionary, pkg: Package) => {
     return {
-      ...packagesByName,
+      ...dictionary,
       [pkg.name]: pkg
     };
   }, {});
 
   // Calculate dependentPackages property
-  Object.keys(packagesByName)
+  Object.keys(packageDictionary)
     .forEach(name => {
-      const pkg = packagesByName[name];
+      const pkg = packageDictionary[name];
       const flatDependencies = [].concat(
-        ...pkg.dependencies.map(dependency => [
+        ...pkg.dependencies.map((dependency: Dependency) => [
           dependency.main,
           ...dependency.alternatives
         ])
       );
       flatDependencies.forEach(dependencyName => {
-        if (packagesByName[dependencyName] &&
-          !packagesByName[dependencyName].dependentPackages.includes(name)) {
-          packagesByName[dependencyName].dependentPackages.push(name);
+        if (packageDictionary[dependencyName] &&
+          !packageDictionary[dependencyName].dependentPackages.includes(name)) {
+          packageDictionary[dependencyName].dependentPackages.push(name);
         }
       });
     });
 
-  return packagesByName;
+  return packageDictionary;
 };
 
-const parsePackage = (string, index) => {
+const parsePackage = (text: string, index: number): Package => {
   try {
     return {
-      name: parseName(string),
-      description: parseDescription(string),
-      dependencies: parseDependencies(string),
+      name: parseName(text),
+      description: parseDescription(text),
+      dependencies: parseDependencies(text),
       dependentPackages: []
     }
   } catch (error) {
@@ -52,24 +67,24 @@ const parsePackage = (string, index) => {
   }
 };
 
-const parseName = string => {
-  const matches = string.match(/Package:\s(.+)\n/);
+const parseName = (text: string): string => {
+  const matches = text.match(/Package:\s(.+)\n/);
   if (matches && matches[1]) {
     return matches[1];
   }
   throw new Error(`Key "Package" not found`);
 };
 
-const parseDescription = string => {
-  const matches = string.match(/Description:\s(.+\n(\s.+\n)*)/);
+const parseDescription = (text: string): string => {
+  const matches = text.match(/Description:\s(.+\n(\s.+\n)*)/);
   if (matches && matches[1]) {
     return matches[1];
   }
   throw new Error(`Key "Description" not found`);
 }
 
-const parseDependencies = string => {
-  const matches = string.match(/\nDepends:\s(.+)\n/);
+const parseDependencies = (text: string): Array<Dependency> => {
+  const matches = text.match(/\nDepends:\s(.+)\n/);
   if (!matches || !matches[1]) {
     // No dependencies for this package
     return [];
@@ -77,7 +92,9 @@ const parseDependencies = string => {
   const dependenciesLine = matches[1];
 
   // 'libc6 (>= 2.2.5)' -> 'libc6'
-  const parsePackageName = packageString => packageString.split(' ').shift();
+  const parsePackageName = (packageString: string) => (
+    packageString.split(' ').shift()
+  );
 
   /*
    * E.g.  
@@ -87,7 +104,10 @@ const parseDependencies = string => {
   const dependencies = dependenciesLine
     .split(', ')
     .map(string => {
-      const packages = string.split(' | ');
+      const packages = string.split(' | ')!;
+      if (!packages || packages.length < 1) {
+        throw new Error(`Invalid dependency format (${dependenciesLine})`);
+      }
       const dependency = {
         main: parsePackageName(packages.shift()),
         alternatives: packages.map(parsePackageName)
@@ -102,6 +122,6 @@ const parseDependencies = string => {
     );
 };
 
-module.exports = {
-  getPackages
+export {
+  getPackageDictionary
 };
