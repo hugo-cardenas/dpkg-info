@@ -8,22 +8,6 @@ import {
 
 const readFile = promisify(fs.readFile);
 
-// interface Dependency {
-//   main: string;
-//   alternatives: Array<string>;
-// };
-
-// interface Package {
-//   name: string;
-//   description: string;
-//   dependencies: Array<Dependency>;
-//   dependentPackages: Array<string>;
-// };
-
-// interface PackageDictionary {
-//   [name: string]: Package
-// }
-
 const getPackageDictionary = async (filePath: string): Promise<PackageDictionary> => {
   const content = await readFile(filePath, 'utf8');
   const packages = content
