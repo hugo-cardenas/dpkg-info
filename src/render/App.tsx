@@ -1,42 +1,36 @@
 import * as React from 'react';
-import { createBrowserHistory } from 'history';
+import history from './history';
+import PackageInfo from './PackageInfo';
+import PackageName from './PackageName';
+import { PackageDictionary } from '../types';
 import './styles.css';
 
-const history = createBrowserHistory();
+interface Props { };
+interface State {
+  pathname: string,
+  isLoading: boolean,
+  packageDictionary: PackageDictionary
+};
 
-
-export default class App extends React.Component {
+export default class App extends React.Component<Props, State> {
   state = {
     pathname: '',
     isLoading: true,
-    packages: [],
-    packageName: null
+    packageDictionary: {}
   }
 
   componentDidMount() {
     const { pathname } = history.location;
     fetch('/api/packages')
       .then(response => response.json())
-      .then(packages => {
-        this.setState({ isLoading: false, pathname, packages })
+      .then(packageDictionary => {
+        this.setState({ isLoading: false, pathname, packageDictionary })
       })
       .catch(console.error);
 
-    window.onpopstate = () => {
-      console.log(this);
-      this.render();
-    }
-
-    history.listen((location, action) => {
-      // location is an object like window.location
-      // console.log(action, location.pathname, location.state);
+    history.listen(location => {
       this.setState({ pathname: location.pathname });
     });
-    
-  }
-
-  navigateToUrl = () => {
-
   }
 
   render() {
@@ -48,12 +42,9 @@ export default class App extends React.Component {
   }
 
   renderContent() {
-    const { isLoading, pathname } = this.state;
+    const { isLoading, pathname } = this.state;
     const matches = pathname.match(/package\/(.+)/);
     const packageName = matches ? matches[1] : null;
-
-    console.log('RENDER CONTENT', pathname, packageName);
-    
 
     if (isLoading) {
       return 'LOADING';
@@ -65,19 +56,16 @@ export default class App extends React.Component {
   }
 
   renderPackageList() {
-    console.log('RENDER PACKAGE LIST');
-
-    const names = Object.keys(this.state.packages);
+    const names = Object.keys(this.state.packageDictionary);
     names.sort();
-
     return (
       <div>
         <h1>Packages:</h1>
         {names.length > 0 ?
           <ul className="package-list">
-            {names.map(name => (
-              <li key={name} onClick={() => this.onPackageClick(name)}>
-                <a href="#" onClick={e => e.preventDefault()}>{name}</a>
+            {names.map((name) => (
+              <li key={name}>
+                <PackageName name={name} isLink={true} />
               </li>
             ))}
           </ul> :
@@ -87,34 +75,11 @@ export default class App extends React.Component {
     );
   }
 
-  renderPackageInfo(packageName) {
-    const pkg = this.state.packages[packageName];
-    if (!pkg) {
-      return (
-        <div>
-          <p>Package not found</p>
-        </div>
-      );
-    }
+  renderPackageInfo(name: string) {
+    const pkg = this.state.packageDictionary[name];
+    const nameList = Object.keys(this.state.packageDictionary);
     return (
-      <div>
-        <p>{pkg.name}</p>
-        <div>
-          Dependencies:
-          {pkg.dependencies.map(dependency => (
-            <div><a href="" onClick={e => {
-              e.preventDefault();
-              history.push(`/package/${dependency.main}`);
-            }}>{dependency.main}</a></div>
-          ))}
-        </div>
-        <p>{pkg.description}</p>
-      </div>
+      <PackageInfo package={pkg} nameList={nameList} />
     );
-  }
-
-  onPackageClick = packageName => {
-    history.push(`/package/${packageName}`);
-    this.setState({ packageName });
   }
 }

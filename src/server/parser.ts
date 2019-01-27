@@ -1,23 +1,28 @@
 const fs = require('fs');
 const { promisify } = require('util');
+import {
+  Dependency,
+  Package,
+  PackageDictionary
+} from '../types';
 
 const readFile = promisify(fs.readFile);
 
-interface Dependency {
-  main: string;
-  alternatives: Array<string>;
-};
+// interface Dependency {
+//   main: string;
+//   alternatives: Array<string>;
+// };
 
-interface Package {
-  name: string;
-  description: string;
-  dependencies: Array<Dependency>;
-  dependentPackages: Array<string>;
-};
+// interface Package {
+//   name: string;
+//   description: string;
+//   dependencies: Array<Dependency>;
+//   dependentPackages: Array<string>;
+// };
 
-interface PackageDictionary {
-  [name: string]: Package
-}
+// interface PackageDictionary {
+//   [name: string]: Package
+// }
 
 const getPackageDictionary = async (filePath: string): Promise<PackageDictionary> => {
   const content = await readFile(filePath, 'utf8');
@@ -83,7 +88,7 @@ const parseDescription = (text: string): string => {
   throw new Error(`Key "Description" not found`);
 }
 
-const parseDependencies = (text: string): Array<Dependency> => {
+const parseDependencies = (text: string): Dependency[] => {
   const matches = text.match(/\nDepends:\s(.+)\n/);
   if (!matches || !matches[1]) {
     // No dependencies for this package
@@ -92,8 +97,8 @@ const parseDependencies = (text: string): Array<Dependency> => {
   const dependenciesLine = matches[1];
 
   // 'libc6 (>= 2.2.5)' -> 'libc6'
-  const parsePackageName = (packageString: string) => (
-    packageString.split(' ').shift()
+  const parsePackageName = (packageString: string): string => (
+    packageString.split(' ').shift()!
   );
 
   /*
@@ -105,11 +110,11 @@ const parseDependencies = (text: string): Array<Dependency> => {
     .split(', ')
     .map(string => {
       const packages = string.split(' | ')!;
-      if (!packages || packages.length < 1) {
+      if (!packages || packages.length < 1) {
         throw new Error(`Invalid dependency format (${dependenciesLine})`);
       }
       const dependency = {
-        main: parsePackageName(packages.shift()),
+        main: parsePackageName(packages.shift()!),
         alternatives: packages.map(parsePackageName)
       };
       return dependency;
