@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Package } from '../types';
 import PackageName from './PackageName';
+import history from './history';
 
 interface Props {
   package: Package,
@@ -11,6 +12,7 @@ export default class PackageInfo extends React.Component<Props> {
   render() {
     return (
       <div className="package-info">
+        {this.renderHeader()}
         {this.renderTitle()}
         {this.renderDependencies()}
         {this.renderDependentPackages()}
@@ -19,11 +21,22 @@ export default class PackageInfo extends React.Component<Props> {
     );
   }
 
+  renderHeader() {
+    return (
+      <a href="/" onClick={this.onHomeClick}>Home</a>
+    );
+  }
+
+  onHomeClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    history.push('/');
+  };
+
   renderTitle() {
     const { package: pkg } = this.props;
     return (
       <div className="section">
-        <h3>{pkg.name}</h3>
+        <h2>{pkg.name}</h2>
       </div>
     );
   }
@@ -31,6 +44,11 @@ export default class PackageInfo extends React.Component<Props> {
   renderDependencies() {
     const { package: pkg } = this.props;
     const { dependencies } = pkg;
+
+    if (dependencies.length === 0) {
+      return null;
+    }
+
     return (
       <div className="section">
         <div className="section-title">Dependencies</div>
@@ -55,6 +73,11 @@ export default class PackageInfo extends React.Component<Props> {
   renderDependentPackages() {
     const { package: pkg } = this.props;
     const { dependentPackages } = pkg;
+
+    if (dependentPackages.length === 0) {
+      return null;
+    }
+
     return (
       <div className="section">
         <div className="section-title">Dependent packages</div>
@@ -84,5 +107,5 @@ export default class PackageInfo extends React.Component<Props> {
     return (
       <PackageName name={name} isLink={nameList.includes(name)} />
     );
-  }
+  };
 }

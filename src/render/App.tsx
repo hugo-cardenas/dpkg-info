@@ -30,6 +30,7 @@ export default class App extends React.Component<Props, State> {
 
     history.listen(location => {
       this.setState({ pathname: location.pathname });
+      window.scrollTo(0, 0);
     });
   }
 
@@ -47,7 +48,7 @@ export default class App extends React.Component<Props, State> {
     const packageName = matches ? matches[1] : null;
 
     if (isLoading) {
-      return 'LOADING';
+      return 'LOADING...';
     }
 
     return packageName ?
@@ -60,7 +61,7 @@ export default class App extends React.Component<Props, State> {
     names.sort();
     return (
       <div>
-        <h1>Packages:</h1>
+        <h2>Packages</h2>
         {names.length > 0 ?
           <ul className="package-list">
             {names.map((name) => (

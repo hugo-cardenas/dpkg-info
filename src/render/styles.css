@@ -1,27 +1,21 @@
 html {
-  font-size: 16px;
+  font-size: 15px;
+  line-height: 1.7
 }
 
 body {
+  background-color: #fff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 @media(max-width:450px) {
   html {
-    font-size: 150%
+    font-size: 120%
   }
-}
-
-#root {
-  /* height: 1024px; */
-  width: 100%;
 }
 
 .root-container {
   margin: 0 auto;
-  background-color: rgb(223, 223, 223);
-  height: 100%;
-  /* width: 100%; */
   padding: 20px;
 }
 
@@ -29,38 +23,15 @@ ul {
   padding: 0;
 }
 
-.package-list {}
-
 li {
   list-style-type: none;
 }
-
-.package-list li {
-  margin-bottom: 5px;
-}
-
-/* .package-list li {
-  list-style-type: none;
-  padding: 10px 15px;
-  background-color: rgb(247, 247, 247);
-  margin-bottom: 5px;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.package-list li:hover {
-  background-color: rgb(255, 255, 255);
-}
-
-.package-list a {
-  text-decoration: none;
-} */
 
 a {
   text-decoration: none;
 }
 
-.package-info > .section{
+.package-info>.section {
   margin-bottom: 20px;
 }
 
