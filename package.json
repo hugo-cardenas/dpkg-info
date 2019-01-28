@@ -7,8 +7,10 @@
     "build": "npm run build:app && npm run build:server",
     "build:app": "webpack --config webpack.config.js",
     "build:server": "tsc",
-    "start:app": "webpack-dev-server",
-    "start:server": "NODE_ENV=development nodemon --exec ts-node src/server/index.ts",
+    "deploy": "now --public && now alias",
+    "start": "node dist/server/index.js",
+    "start:dev:app": "webpack-dev-server",
+    "start:dev:server": "NODE_ENV=development nodemon --exec ts-node src/server/index.ts",
     "test": "jest"
   },
   "repository": {
