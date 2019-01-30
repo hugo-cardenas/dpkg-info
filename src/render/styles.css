@@ -1,17 +1,18 @@
-html {
-  font-size: 15px;
-  line-height: 1.7
-}
-
 body {
   background-color: #fff;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 @media(max-width:450px) {
-  html {
+  body {
     font-size: 120%
   }
+}
+
+a {
+  text-decoration: none;
 }
 
 .root-container {
@@ -19,26 +20,22 @@ body {
   padding: 20px;
 }
 
-ul {
+.package-list {
   padding: 0;
 }
 
-li {
+.package-list li {
   list-style-type: none;
-}
-
-a {
-  text-decoration: none;
 }
 
 .package-info>.section {
   margin-bottom: 20px;
 }
 
-.section .section-title {
+.package-info>.section>.section-title {
   font-weight: bold;
 }
 
-.section .description {
+.package-info>.section>.description {
   white-space: pre-wrap;
 }

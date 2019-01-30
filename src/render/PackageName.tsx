@@ -11,7 +11,7 @@ export default class PackageName extends React.Component<Props> {
     const { isLink, name } = this.props;
     if (isLink) {
       return (
-        <a href={`/package/${name}`} onClick={this.onClick}>{name}</a>
+        <a className="package-name" href={`/package/${name}`} onClick={this.onClick}>{name}</a>
       );
     } else {
       return (

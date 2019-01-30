@@ -18,13 +18,12 @@
     "url": "git+https://github.com/hugo-cardenas/dpkg-info.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hugo-cardenas/dpkg-info/issues"
   },
   "homepage": "https://github.com/hugo-cardenas/dpkg-info#readme",
   "dependencies": {
-    "@types/history": "^4.7.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "history": "^4.7.2",
@@ -37,6 +36,7 @@
     "@babel/preset-react": "^7.0.0",
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.0",
+    "@types/history": "^4.7.2",
     "@types/jest": "^23.3.13",
     "@types/node": "^10.12.18",
     "@types/react": "^16.7.20",
@@ -59,7 +59,6 @@
     "typescript": "^3.2.4",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
-    "webpack-dev-middleware": "^3.5.1",
     "webpack-dev-server": "^3.1.14"
   }
 }
