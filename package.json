@@ -1,5 +1,5 @@
 {
-  "name": "reaktor-package-info",
+  "name": "dpkg-info",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hugo-cardenas/reaktor-package-info.git"
+    "url": "git+https://github.com/hugo-cardenas/dpkg-info.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hugo-cardenas/reaktor-package-info/issues"
+    "url": "https://github.com/hugo-cardenas/dpkg-info/issues"
   },
-  "homepage": "https://github.com/hugo-cardenas/reaktor-package-info#readme",
+  "homepage": "https://github.com/hugo-cardenas/dpkg-info#readme",
   "dependencies": {
     "@types/history": "^4.7.2",
     "cors": "^2.8.5",

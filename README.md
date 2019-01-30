@@ -1,6 +1,9 @@
 # dpkg-info
 
-Parse a file following the format of Debian's `/var/lib/dpkg/status` and serve a website which lists all packages and displays an info page for each package, allowing to navigate through package dependencies.
+Parse a file following the format of Debian's `/var/lib/dpkg/status` and serve a website which:
+- Lists all packages
+- Displays info page for each package
+- Allows to navigate through package dependencies
 
 The project is composed of a Node.js server and a React application displaying the data.
 
@@ -19,7 +22,7 @@ npm run start:dev:app
 
 You can now access the app on <http://localhost:8081>, which will connect to the API served on <http://localhost:8080>.
 
-In production, the whole app is just served under `domain:8080`
+In production, the whole app is served on `domain:8080`
 
 ### Test
 
