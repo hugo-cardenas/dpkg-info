@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.resolve(__dirname, '../render')));
 
 app.get('/api/packages', async (req: express.Request, res: express.Response) => {
-  const packageDictionary = await getPackageDictionary('./status.real.txt');
+  const packageDictionary = await getPackageDictionary('./status.txt');
   res.json(packageDictionary);
 });
 
